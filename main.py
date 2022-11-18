@@ -1,12 +1,13 @@
 import yfinance as yf
 import plotly.graph_objs as go
-from datetime import datetime, timedelta
-from os import pardir
 
 tickers = ['INTC']
 threshold = 3
 choice = tickers[0]
 
+url = "https://www.earningswhispers.com/calendar?sb=p&d=0&t=all&v=t"
+buy_price = 0
+sell_price = 0
 global_counter = 0
 decrease_counter = 0
 increase_counter = 0
@@ -68,9 +69,13 @@ for price in data['Close']:
 
     if increase_counter == threshold:
         print(stored_datetime[global_counter], "Stock is going up, buy!")
+        buy_price = price
 
     if decrease_counter == threshold:
         print(stored_datetime[global_counter], "Stock is going down, sell!")
+        sell_price = price
+        print("buy price was: ", buy_price, " sell price was: ", sell_price, " profit is: "
+              , (sell_price-buy_price) / buy_price * 100, "%")
     if increase_counter > threshold:
         # print(stored_datetime[global_counter], "buy command was correct")
         correct_counter += 1
@@ -81,5 +86,5 @@ for price in data['Close']:
 
     global_counter += 1
 
-print("correct_counter == ", correct_counter)
-print("incorrect_counter == ", incorrect_counter)
+# print("correct_counter == ", correct_counter)
+# print("incorrect_counter == ", incorrect_counter)
